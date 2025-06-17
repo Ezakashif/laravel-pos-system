@@ -63,6 +63,8 @@ use Stripe\Charge;
 use Stripe\Stripe;
 use Yajra\DataTables\Facades\DataTables;
 use App\Events\SellCreatedOrModified;
+use App\Services\FBRService;
+use App\Helpers\FBRPayloadBuilder;
 
 class SellPosController extends Controller
 {
@@ -481,6 +483,35 @@ class SellPosController extends Controller
                 $input['document'] = $this->transactionUtil->uploadFile($request, 'sell_document', 'documents');
 
                 $transaction = $this->transactionUtil->createSellTransaction($business_id, $input, $invoice_total, $user_id);
+                
+               
+
+                // === START: FBR Digital Invoicing ===
+                try {
+                    $company = $transaction->business;
+                    $bposid = $company->fbr_bposid ?? null;
+                    $token = $company->fbr_token ?? null;
+
+                    if ($bposid && $token) {
+                        $payload = FBRPayloadBuilder::build($transaction, $bposid);
+                        $response = app(FBRService::class)->send($payload, $token);
+
+                        if ($response->successful()) {
+                            $trackingNumber = $response->json()['result'] ?? null;
+                            $transaction->fbr_tracking_no = $trackingNumber;
+                            $transaction->save();
+                        } else {
+                            \Log::error('FBR API Error', [
+                                'status' => $response->status(),
+                                'body' => $response->body()
+                            ]);
+                        }
+                    }
+                } catch (\Exception $e) {
+                    \Log::error('FBR Exception', ['message' => $e->getMessage()]);
+                }
+                // === END: FBR Digital Invoicing ===
+
 
                 //Upload Shipping documents
                 Media::uploadMedia($business_id, $transaction, $request, 'shipping_documents', false, 'shipping_document');
