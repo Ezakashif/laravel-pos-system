@@ -35,7 +35,7 @@
                         <path d="M10 10l-2 2l2 2" />
                     </svg>
                 </button>
-               
+               @include('layouts.partials.register_button') 
             </div>
 
 
