@@ -58,6 +58,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 use Razorpay\Api\Api;
 use Stripe\Charge;
 use Stripe\Stripe;
@@ -494,6 +495,11 @@ class SellPosController extends Controller
 
                     if ($bposid && $token) {
                         $payload = FBRPayloadBuilder::build($transaction, $bposid);
+                        //Fake tracking_no
+                        Http::fake([
+                            '*' => Http::response(['result' => 'FAKE-FBR-123456'], 200)
+                        ]);
+                        //fake end
                         $response = app(FBRService::class)->send($payload, $token);
 
                         if ($response->successful()) {
@@ -2102,7 +2108,7 @@ class SellPosController extends Controller
     {
         $transaction = Transaction::where('invoice_token', $token)->with(['business', 'location'])->first();
 
-        if (!empty($transaction)) {
+        if (!empty($transaction)) { 
             $invoice_layout_id = $transaction->is_direct_sale ? $transaction->location->sale_invoice_layout_id : null;
 
             $receipt = $this->receiptContent($transaction->business_id, $transaction->location_id, $transaction->id, 'browser', false, false, $invoice_layout_id);

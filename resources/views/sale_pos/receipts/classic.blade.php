@@ -78,6 +78,7 @@
 					{!! $receipt_details->invoice_heading !!}
 				</h3>
 			@endif
+	
 		</div>
 		@if(!empty($receipt_details->letter_head))
 			<div class="col-xs-12 text-center">
@@ -633,6 +634,12 @@
 	    	<p>{!! nl2br($receipt_details->additional_notes) !!}</p>
 	    </div>
     @endif
+
+		@if(!empty($receipt_details->fbr_display_block))
+				<h3 class="text-center">
+					{!! $receipt_details->fbr_display_block !!}
+				</h3>
+			@endif
     
 </div>
 <div class="row" style="color: #000000 !important;">
@@ -651,6 +658,7 @@
 			@if($receipt_details->show_qr_code && !empty($receipt_details->qr_code_text))
 				<img class="center-block mt-5" src="data:image/png;base64,{{DNS2D::getBarcodePNG($receipt_details->qr_code_text, 'QRCODE', 3, 3, [39, 48, 54])}}">
 			@endif
+		
 		</div>
 	@endif
 </div>

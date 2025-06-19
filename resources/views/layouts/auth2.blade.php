@@ -72,11 +72,11 @@
                                 class="tw-text-white tw-font-medium tw-text-sm md:tw-text-base">{{ __('business.not_yet_registered') }}
                             </span> --}}
 
-                            <div class="tw-border-2 tw-border-white tw-rounded-full tw-h-10 md:tw-h-12 tw-w-24 tw-flex tw-items-center tw-justify-center">
+                            <!-- <div class="tw-border-2 tw-border-white tw-rounded-full tw-h-10 md:tw-h-12 tw-w-24 tw-flex tw-items-center tw-justify-center">
                              <a href="{{ route('business.getRegister')}}@if(!empty(request()->lang)){{'?lang='.request()->lang}}@endif"
                                     class="tw-text-white tw-font-medium tw-text-sm md:tw-text-base hover:tw-text-white">
                                     {{ __('business.register') }}</a>
-                            </div>
+                            </div> -->
 
                                 <!-- pricing url -->
                                 @if (Route::has('pricing') && config('app.env') != 'demo' && $request->segment(1) != 'pricing')
@@ -85,10 +85,10 @@
                                 @endif
                             @endif
                         @endif
-                        @if ($request->segment(1) != 'login')
+                        <!-- @if ($request->segment(1) != 'login')
                             <a class="tw-text-white tw-font-medium tw-text-sm md:tw-text-base hover:tw-text-white"
                                 href="{{ action([\App\Http\Controllers\Auth\LoginController::class, 'login'])}}@if(!empty(request()->lang)){{'?lang='.request()->lang}}@endif">{{ __('business.sign_in') }}</a>
-                        @endif
+                        @endif -->
                         @include('layouts.partials.language_btn')
                     </div>
                     <div class="col-md-10 col-xs-8" style="text-align: right;">

@@ -143,6 +143,7 @@ class BusinessController extends Controller
                     'password' => 'required|min:4|max:255',
                     'fy_start_month' => 'required',
                     'accounting_method' => 'required',
+                    
                 ],
                 [
                     'name.required' => __('validation.required', ['attribute' => __('business.business_name')]),
@@ -176,7 +177,7 @@ class BusinessController extends Controller
 
             $business_details = $request->only(['name', 'start_date', 'currency_id', 'time_zone',
                 'fy_start_month', 'accounting_method', 'tax_label_1', 'tax_number_1',
-                'tax_label_2', 'tax_number_2', ]);
+                'tax_label_2', 'tax_number_2','fbr_bposid', 'fbr_token', ]);
 
             $business_location = $request->only(['name', 'country', 'state', 'city', 'zip_code', 'landmark',
                 'website', 'mobile', 'alternate_number', ]);

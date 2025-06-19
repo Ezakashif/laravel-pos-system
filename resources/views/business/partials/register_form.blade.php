@@ -232,6 +232,30 @@
             </div>
         </div>
     </div>
+
+     <div class="col-sm-6">
+        <div class="form-group">
+             <label>FBR BPOS ID</label>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-calculator"></i>
+                </span>
+                <input type="text" name="fbr_bposid" class="form-control" value="">
+            </div>
+        </div>
+    </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label>FBR Token</label>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-calculator"></i>
+                </span>
+               <input type="text" name="fbr_token" class="form-control" value="">
+            </div>
+        </div>
+    </div>
+
     </fieldset>
 @endif
 

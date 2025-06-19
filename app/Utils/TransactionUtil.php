@@ -27,6 +27,7 @@ use App\VariationLocationDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\CashRegister;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 class TransactionUtil extends Util
@@ -978,6 +979,8 @@ class TransactionUtil extends Util
             'table_qty_label' => $il->table_qty_label,
             'table_unit_price_label' => $il->table_unit_price_label,
             'table_subtotal_label' => $il->table_subtotal_label,
+            'fbr_tracking_no' => $transaction->fbr_tracking_no ?? null,
+            'fbr_qr_code' => (!empty($transaction->fbr_tracking_no)) ? \QrCode::size(100)->generate($transaction->fbr_tracking_no) : null,
         ];
 
         //Display name
@@ -987,6 +990,17 @@ class TransactionUtil extends Util
                 $output['display_name'] .= ', ';
             }
             $output['display_name'] .= $output['location_name'];
+        }
+
+        //FBR display block
+        $output['fbr_display_block'] = '';
+        if (!empty($transaction->fbr_tracking_no)) {
+            $qr_code = \QrCode::size(100)->generate($transaction->fbr_tracking_no);
+
+            $output['fbr_display_block'] = '<div style="text-align:left; margin-top:20px; font-size:16px;">' .
+                '<p><strong>FBR Tracking No:</strong> ' . $transaction->fbr_tracking_no . '</p>' .'<br>'.
+                $qr_code .
+                '</div>';
         }
 
         //Codes
@@ -1914,6 +1928,8 @@ class TransactionUtil extends Util
 
         $output['design'] = $il->design;
         $output['table_tax_headings'] = ! empty($il->table_tax_headings) ? array_filter(json_decode($il->table_tax_headings), 'strlen') : null;
+        
+     
 
         return (object) $output;
     }
@@ -2453,6 +2469,7 @@ class TransactionUtil extends Util
 
         return $output;
     }
+
 
     public function getTotalPurchaseReturnPaid($business_id, $start_date = null, $end_date = null, $location_id = null, $created_by = null)
     {
