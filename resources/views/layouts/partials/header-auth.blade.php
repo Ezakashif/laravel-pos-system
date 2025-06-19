@@ -41,9 +41,9 @@
 
                     <!-- Register Url -->
                     @if (config('constants.allow_registration'))
-                        <a href="{{route('business.getRegister')}}@if(!empty(request()->lang)){{'?lang='.request()->lang}}@endif"
+                        <!-- <a href="{{route('business.getRegister')}}@if(!empty(request()->lang)){{'?lang='.request()->lang}}@endif"
                             class="tw-text-white tw-font-medium tw-text-sm md:tw-text-base hover:tw-text-white">{{ __('business.register') }}
-                        </a>
+                        </a> -->
 
                         <!-- pricing url -->
                         @if (Route::has('pricing') && config('app.env') != 'demo' && $request->segment(1) != 'pricing')

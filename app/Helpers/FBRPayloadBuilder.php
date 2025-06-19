@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\Transaction;
+use App\Transaction;
 
 class FBRPayloadBuilder
 {
